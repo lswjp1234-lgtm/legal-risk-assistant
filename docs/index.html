@@ -169,12 +169,12 @@ body{font-family:"Microsoft YaHei",sans-serif;background:#f0f4f8;color:#2d3748}
 <div id="introPage" class="page active">
 <div class="hero">
 <h1>5分钟，发现企业法律风险</h1>
-<p>13大模块 · 97+专业检测项 · 免费体检</p>
+<p>16大模块 · 97+专业检测项 · 免费体检</p>
 <button class="cta-btn" onclick="showPage('loginPage')">免费开始体检 →</button>
 </div>
 <div class="stats">
 <div class="stats-grid">
-<div class="stat-item"><div class="stat-num">13</div><div class="stat-label">风险检测模块</div></div>
+<div class="stat-item"><div class="stat-num">16</div><div class="stat-label">风险检测模块</div></div>
 <div class="stat-item"><div class="stat-num">97+</div><div class="stat-label">专业检测题</div></div>
 <div class="stat-item"><div class="stat-num">27年</div><div class="stat-label">执业经验</div></div>
 <div class="stat-item"><div class="stat-num">0元</div><div class="stat-label">完全免费</div></div>
@@ -332,7 +332,7 @@ body{font-family:"Microsoft YaHei",sans-serif;background:#f0f4f8;color:#2d3748}
 <p style="color:#666;line-height:1.8;margin-bottom:20px">企业法律风险智能体检平台，由王金平律师团队倾力打造。基于27年企业法律服务经验，将复杂的法律风险排查转化为简单易懂的在线自测工具。</p>
 <h3 style="color:#1a365d;margin-bottom:12px">我们的优势</h3>
 <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;text-align:center">
-<div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">📋</div><div style="font-size:13px;color:#1a365d">13大模块</div></div>
+<div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">📋</div><div style="font-size:13px;color:#1a365d">16大模块</div></div>
 <div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">🎯</div><div style="font-size:13px;color:#1a365d">专业评估</div></div>
 <div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">⚡</div><div style="font-size:13px;color:#1a365d">5分钟出结果</div></div>
 <div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">🔒</div><div style="font-size:13px;color:#1a365d">数据安全</div></div>
@@ -547,6 +547,30 @@ var modules=[
 {q:"是否有法律顾问支持？",opts:["有常年法律顾问","偶尔咨询律师","无法律顾问支持"],sug:["继续保持法律顾问服务","建议聘请常年法律顾问","无顾问可能增加争议解决成本"]},
 {q:"是否做了风险预案？",opts:["有完善风险预案","有简单预案但不完善","无风险预案"],sug:["继续保持并定期更新","建议完善风险预案","无预案可能措手不及"]},
 {q:"执行阶段权利主张是否规范？",opts:["权利主张规范有序","有基本了解但不规范","不了解执行程序"],sug:["继续保持规范操作","建议加强执行程序了解","不规范可能影响权益实现"]}
+]},
+{id:"labor_dispute",icon:"⚖️",title:"劳动争议纠纷化解",questions:[
+{q:"公司是否有规范的劳动争议预防机制？",opts:["有完善预防机制","有基本流程","无预防机制"],sug:["继续保持并定期培训","建议建立争议预防制度","无预防机制易发群体仲裁"]},
+{q:"员工投诉渠道是否畅通？",opts:["渠道畅通且有专人处理","有渠道但响应慢","无正式投诉渠道"],sug:["继续保持畅通沟通","建议优化投诉处理流程","员工无处申诉可能直接仲裁"]},
+{q:"是否建立劳动仲裁应对团队？",opts:["有专业团队支持","有兼职处理人员","无应对团队"],sug:["继续保持专业支持","建议指定专人负责仲裁应对","无应对团队可能被动应诉"]},
+{q:"历史劳动纠纷是否已妥善处理？",opts:["已全部解决","大部分已解决","仍有未决纠纷"],sug:["继续保持和谐劳动关系","建议尽快处理遗留问题","未决纠纷可能引发更多仲裁"]},
+{q:"薪资结构是否符合法律规定？",opts:["合规且透明","基本合规但不够透明","存在不合规项"],sug:["继续保持规范管理","建议透明化薪资结构","不合规薪资可能被追诉"]},
+{q:"是否定期进行用工合规审查？",opts:["每季度审查","每年审查","从未审查"],sug:["继续保持定期审查","建议增加审查频率","未审查可能遗漏重大风险"]}
+]},
+{id:"ip_dispute",icon:"🔍",title:"知识产权纠纷维权与抗辩",questions:[
+{q:"公司核心知识产权是否已注册登记？",opts:["全部已注册","大部分已注册","未注册"],sug:["继续保持知识产权保护","建议尽快注册未保护的IP","未注册可能被他人抢注"]},
+{q:"是否建立了知识产权监控机制？",opts:["有专业监控","偶尔关注","无监控"],sug:["继续保持监控体系","建议建立定期监控","无监控可能被侵权而不自知"]},
+{q:"技术秘密保护措施是否到位？",opts:["完善的技术保密体系","有基本保密措施","无保密措施"],sug:["继续保持保密管理","建议加强技术保密制度","无保密措施可能泄露核心技术"]},
+{q:"是否遭遇过知识产权侵权？",opts:["未遭遇","遭遇过但已处理","遭遇且未处理"],sug:["继续保持警惕","建议完善侵权应对预案","未处理的侵权可能扩大损失"]},
+{q:"员工离职是否执行IP交接？",opts:["有规范IP交接流程","有基本交接","无IP交接"],sug:["继续保持规范交接","建议完善IP交接制度","无交接可能带走公司IP"]},
+{q:"是否投保知识产权保险？",opts:["已投保","考虑中","未投保"],sug:["继续保持保障","建议评估IP保险需求","无保险可能承担全部损失"]}
+]},
+{id:"cross_border",icon:"🌍",title:"跨境经营与ESG涉外合规",questions:[
+{q:"公司是否有跨境业务或涉外合作？",opts:["有，且已建立合规体系","有，但合规不完善","暂无跨境业务"],sug:["继续保持跨境合规管理","建议完善涉外合规制度","暂无但应提前了解"]},
+{q:"涉外合同是否经过专业审核？",opts:["全部经律师审核","重要合同审核","未审核"],sug:["继续保持专业审核","建议所有涉外合同都审核","涉外合同风险远大于国内"]},
+{q:"是否了解目标市场的法律环境？",opts:["深入了解并持续跟踪","有基本了解","不了解"],sug:["继续保持法律环境跟踪","建议深入研究目标市场","不了解目标法律风险极大"]},
+{q:"数据跨境传输是否合规？",opts:["完全合规","基本合规","不合规或不确定"],sug:["继续保持数据合规","建议完善跨境数据制度","数据违规可能被重罚"]},
+{q:"是否关注ESG（环境社会治理）合规？",opts:["已建立ESG体系","正在关注","未关注"],sug:["继续保持ESG管理","建议加快ESG建设","ESG已成国际投资必选项"]},
+{q:"国际贸易制裁合规是否纳入管理？",opts:["有专门合规团队","有基本了解","未纳入管理"],sug:["继续保持制裁合规","建议加强制裁风险排查","制裁违规后果极其严重"]}
 ]}
 ];
 
