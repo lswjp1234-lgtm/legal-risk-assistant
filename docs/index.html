@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>浼佷笟娉曞緥椋庨櫓鏅鸿兘浣撴</title>
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:"Microsoft YaHei",sans-serif;background:#f0f4f8;color:#2d3748}
+.page{display:none}
+.page.active{display:block}
+.navbar{background:#1a365d;padding:14px 5%;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:9999}
+.navbar-logo{color:white;font-size:18px;font-weight:700;cursor:pointer}
+.navbar-menu{display:flex;gap:16px}
+.navbar-menu a{color:white;opacity:0.9;text-decoration:none;font-size:14px;cursor:pointer}
+.navbar-menu a:hover{opacity:1}
+.hero{background:linear-gradient(135deg,#1a365d,#2d5a87);padding:80px 20px;text-align:center;color:white}
+.hero h1{font-size:36px;font-weight:800;margin-bottom:12px}
+.hero p{font-size:16px;opacity:0.9;margin-bottom:24px}
+.cta-btn{display:inline-block;padding:14px 40px;background:#f6ad55;color:#1a365d;font-size:16px;font-weight:700;border-radius:30px;cursor:pointer;border:none}
+.stats{padding:40px 5%;background:white}
+.stats-grid{max-width:700px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.stat-item{text-align:center}
+.stat-num{font-size:36px;font-weight:800;color:#1a365d}
+.stat-label{color:#888;font-size:12px;margin-top:4px}
+.how-section{max-width:700px;margin:50px auto;padding:0 20px;text-align:center}
+.how-section h2{font-size:22px;color:#1a365d;margin-bottom:24px}
+.how-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.how-card{background:white;border-radius:12px;padding:24px 16px;box-shadow:0 2px 10px rgba(0,0,0,0.06)}
+.how-card h3{font-size:15px;color:#1a365d;font-weight:600;margin-bottom:6px}
+.how-card p{color:#888;font-size:12px}
+.module-section{max-width:800px;margin:0 auto;padding:0 20px 50px}
+.section-title{text-align:center;margin-bottom:24px}
+.section-title h2{font-size:22px;color:#1a365d}
+.module-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.module-item{background:white;border-radius:12px;padding:16px 12px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05)}
+.module-icon{font-size:28px;margin-bottom:8px}
+.module-item h4{color:#1a365d;font-size:12px;font-weight:600;margin-bottom:4px}
+.module-item span{color:#888;font-size:11px}
+.cta-section{background:#1a365d;padding:50px 20px;text-align:center;color:white}
+.cta-section h2{font-size:22px;margin-bottom:8px}
+.cta-section p{opacity:0.8;margin-bottom:20px}
+.footer{background:#0f172a;padding:16px;text-align:center}
+.footer p{color:rgba(255,255,255,0.5);font-size:12px}
+/*鐧诲綍*/
+.login-page{min-height:100vh;background:linear-gradient(135deg,#1a365d,#2d5a87);padding:50px 20px;display:flex;align-items:center;justify-content:center}
+.login-box{background:white;border-radius:16px;padding:30px;max-width:380px;width:100%}
+.login-box h2{text-align:center;color:#1a365d;font-size:20px;margin-bottom:20px}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;color:#555;font-size:13px;margin-bottom:6px}
+.form-input{width:100%;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:14px}
+.sms-row{display:flex;gap:8px}
+.sms-row input{flex:1}
+.sms-btn{padding:12px 16px;background:#f0f0f0;border:none;border-radius:8px;cursor:pointer;font-size:13px}
+.submit-btn{width:100%;padding:14px;background:#1a365d;color:white;border:none;border-radius:8px;font-size:15px;font-weight:600;cursor:pointer}
+.terms{margin:14px 0;font-size:12px;color:#666}
+.terms a{color:#1a365d}
+.back-link{text-align:center;margin-top:16px}
+.back-link a{color:#888;font-size:13px;text-decoration:none}
+/*浼佷笟淇℃伅*/
+.company-page{min-height:100vh;background:linear-gradient(135deg,#1a365d,#2d5a87);padding:50px 20px;display:flex;align-items:center;justify-content:center}
+/*寰嬪笀浠嬬粛*/
+.lawyer-page{background:#f0f4f8;min-height:100vh}
+.lawyer-hero{background:linear-gradient(135deg,#1a365d,#2d5a87);padding:40px 20px;text-align:center;color:white}
+.lawyer-hero h1{font-size:24px;font-weight:700;margin-bottom:8px}
+.lawyer-hero p{opacity:0.9;font-size:14px}
+.lawyer-content{max-width:600px;margin:0 auto;padding:30px 20px}
+.lawyer-section{margin-bottom:24px}
+.lawyer-section h2{font-size:18px;color:#1a365d;margin-bottom:12px}
+.lawyer-tags{display:flex;flex-wrap:wrap;gap:8px}
+.lawyer-tag{background:white;padding:8px 14px;border-radius:20px;font-size:13px;color:#1a365d}
+.lawyer-concerns{background:#fef2f2;padding:16px;border-radius:10px}
+.lawyer-concerns div{padding:8px 0;color:#c00;font-size:13px}
+.lawyer-benefits{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.lawyer-benefit{background:white;padding:14px;border-radius:10px;display:flex;gap:10px}
+.lawyer-benefit-icon{font-size:24px}
+.lawyer-benefit strong{display:block;font-size:14px;color:#1a365d}
+.lawyer-benefit p{font-size:12px;color:#888}
+.lawyer-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:20px 0}
+.lawyer-stat{background:white;padding:16px;border-radius:10px;text-align:center}
+.lawyer-stat .num{font-size:24px;font-weight:800;color:#1a365d}
+.lawyer-stat .label{font-size:11px;color:#888}
+.lawyer-contact{background:#1a365d;padding:30px;text-align:center;color:white;border-radius:12px;margin:20px 0}
+.lawyer-contact h2{font-size:20px;margin-bottom:8px}
+.lawyer-contact p{opacity:0.9;margin-bottom:12px;font-size:14px}
+.lawyer-contact .phone{font-size:28px;font-weight:800;color:#f6ad55}
+.lawyer-back{text-align:center;margin-top:20px}
+.lawyer-back button{background:#1a365d;color:white;border:none;padding:12px 30px;border-radius:8px;font-size:14px;cursor:pointer}
+/*鍏朵粬椤甸潰*/
+.info-page{min-height:100vh;padding:100px 20px 50px;background:#f0f4f8}
+.info-card{background:white;border-radius:16px;padding:30px;max-width:500px;margin:0 auto;text-align:center}
+.admin-page{min-height:100vh;background:#f0f4f8;padding:50px 20px}
+/*绛旈*/
+.quiz-page{background:#f0f4f8;min-height:100vh}
+.progress{background:white;padding:12px 20px;position:sticky;top:60px;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,0.08)}
+.progress-info{display:flex;justify-content:space-between;font-size:13px;color:#666;margin-bottom:8px}
+.progress-bar{height:4px;background:#eee;border-radius:2px}
+.progress-fill{height:100%;background:#1a365d;width:0%}
+.quiz-content{max-width:700px;margin:20px auto;padding:0 16px}
+.quiz-card{background:white;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.quiz-header{background:#1a365d;color:white;padding:20px}
+.quiz-header h2{font-size:18px;margin-bottom:4px}
+.quiz-header span{font-size:13px;opacity:0.8}
+.quiz-body{padding:20px}
+.question{margin-bottom:20px}
+.question-text{font-size:14px;font-weight:500;color:#333;margin-bottom:10px}
+.options{display:flex;flex-wrap:wrap;gap:8px;margin-left:16px}
+.option{padding:10px 16px;border:2px solid #ddd;border-radius:8px;cursor:pointer;font-size:13px}
+.option:hover{border-color:#1a365d}
+.option.selected{border-color:#1a365d;background:#1a365d;color:white}
+.option.high{border-color:#fcc;color:#c00}
+.option.medium{border-color:#fc0;color:#a60}
+.option.low{border-color:#6c6;border-color:#6c6}
+.quiz-nav{display:flex;justify-content:space-between;padding:16px 20px;border-top:1px solid #eee}
+.quiz-nav button{padding:12px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer}
+.quiz-nav .prev{background:#eee;color:#666;border:none}
+.quiz-nav .next{background:#1a365d;color:white;border:none}
+.quiz-nav .next.disabled{background:#ccc;cursor:not-allowed}
+/*鎶ュ憡*/
+.result-header{background:linear-gradient(135deg,#1a365d,#2d5a87);padding:50px 20px;text-align:center;color:white}
+.score-box{width:120px;height:120px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 20px}
+.score-box.low{background:#22c55e}.score-box.medium{background:#f59e0b}.score-box.high{background:#ef4444}
+.score-val{font-size:36px;font-weight:800}
+.score-label{font-size:11px;opacity:0.9}
+.result-stats{max-width:600px;margin:-30px auto 0;position:relative;padding:0 20px}
+.risk-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.risk-card{background:white;border-radius:12px;padding:20px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,0.1)}
+.risk-card .num{font-size:28px;font-weight:800}
+.risk-card .label{font-size:12px;color:#888;margin-top:4px}
+.result-body{max-width:700px;margin:20px auto;padding:0 20px}
+.module-list{background:white;border-radius:12px;padding:20px;margin-bottom:16px}
+.module-item{ display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0;align-items:center}
+.module-item:last-child{border-bottom:none}
+.module-name{font-size:14px}
+.module-score{font-size:16px;font-weight:700}
+.module-score.high{color:#ef4444}.module-score.medium{color:#f59e0b}.module-score.low{color:#22c55e}
+.result-footer{background:#1a365d;padding:40px 20px;text-align:center;color:white}
+.result-footer h3{font-size:18px;margin-bottom:8px}
+.result-footer p{opacity:0.8;margin-bottom:20px;font-size:14px}
+.cta-btns{display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+.cta-btn2{padding:14px 24px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none}
+.cta-btn2.primary{background:#f6ad55;color:#1a365d}
+.cta-btn2.secondary{background:rgba(255,255,255,0.2);color:white}
+@media(max-width:768px){
+.hero h1{font-size:28px}
+.stats-grid{grid-template-columns:repeat(2,1fr)}
+.how-grid{grid-template-columns:1fr}
+.risk-grid{grid-template-columns:1fr}
+.lawyer-stats{grid-template-columns:repeat(2,1fr)}
+.lawyer-benefits{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<nav class="navbar">
+<div class="navbar-logo" onclick="showPage('introPage')">浼佷笟娉曞緥椋庨櫓浣撴</div>
+<div class="navbar-menu">
+<a onclick="showPage('introPage')">棣栭〉</a>
+<a onclick="showPage('loginPage')">寮€濮嬩綋妫€</a>
+<a onclick="showPage('lawyerPage')">寰嬪笀浠嬬粛</a>
+<a onclick="showPage('aboutPage')">鍏充簬鎴戜滑</a>
+<a onclick="showPage('contactPage')">鑱旂郴鎴戜滑</a>
+<a onclick="showAdminPage()">鍚庡彴绠＄悊</a>
+</div>
+</nav>
+
+<div id="introPage" class="page active">
+<div class="hero">
+<h1>5鍒嗛挓锛屽彂鐜颁紒涓氭硶寰嬮闄?/h1>
+<p>13澶фā鍧?路 97+涓撲笟妫€娴嬮」 路 鍏嶈垂浣撴</p>
+<button class="cta-btn" onclick="showPage('loginPage')">鍏嶈垂寮€濮嬩綋妫€ 鈫?/button>
+</div>
+<div class="stats">
+<div class="stats-grid">
+<div class="stat-item"><div class="stat-num">13</div><div class="stat-label">椋庨櫓妫€娴嬫ā鍧?/div></div>
+<div class="stat-item"><div class="stat-num">97+</div><div class="stat-label">涓撲笟妫€娴嬮</div></div>
+<div class="stat-item"><div class="stat-num">27骞?/div><div class="stat-label">鎵т笟缁忛獙</div></div>
+<div class="stat-item"><div class="stat-num">0鍏?/div><div class="stat-label">瀹屽叏鍏嶈垂</div></div>
+</div>
+</div>
+<div class="how-section">
+<h2>涓夋瀹屾垚浣撴</h2>
+<div class="how-grid">
+<div class="how-card"><h3>濉啓浼佷笟淇℃伅</h3><p>绾?0绉?/p></div>
+<div class="how-card"><h3>瀹屾垚椋庨櫓闂嵎</h3><p>绾?鍒嗛挓</p></div>
+<div class="how-card"><h3>鑾峰彇浣撴鎶ュ憡</h3><p>鏅鸿兘鍒嗘瀽</p></div>
+</div>
+</div>
+<div class="module-section">
+<div class="section-title"><h2>瑕嗙洊浼佷笟鍏ㄧ敓鍛藉懆鏈熸硶寰嬮闄?/h2></div>
+<div class="module-grid">
+<div class="module-item"><div class="module-icon">馃搵</div><h4>浼佷笟鍩虹鍚堣</h4><span>6棰?/span></div>
+<div class="module-item"><div class="module-icon">馃懃</div><h4>鍔冲姩鐢ㄥ伐鍚堣</h4><span>8棰?/span></div>
+<div class="module-item"><div class="module-icon">馃摑</div><h4>鍚堝悓浜ゆ槗鍚堣</h4><span>7棰?/span></div>
+<div class="module-item"><div class="module-icon">馃挼</div><h4>绋庡姟椋庨櫓鍚堣</h4><span>7棰?/span></div>
+<div class="module-item"><div class="module-icon">馃毃</div><h4>鍒戜簨椋庨櫓闃叉帶</h4><span>8棰?/span></div>
+<div class="module-item"><div class="module-icon">馃挵</div><h4>鑲℃潈铻嶈祫鍚堣</h4><span>6棰?/span></div>
+<div class="module-item"><div class="module-icon">馃彿锔?/div><h4>鐭ヨ瘑浜ф潈鍚堣</h4><span>7棰?/span></div>
+<div class="module-item"><div class="module-icon">馃敀</div><h4>鏁版嵁瀹夊叏鍚堣</h4><span>8棰?/span></div>
+<div class="module-item"><div class="module-icon">馃彚</div><h4>鎴夸骇涓庣璧佸悎瑙?/h4><span>6棰?/span></div>
+<div class="module-item"><div class="module-icon">馃尶</div><h4>鐜繚瀹夊叏鍚堣</h4><span>6棰?/span></div>
+<div class="module-item"><div class="module-icon">鈿栵笍</div><h4>琛屼笟涓撻」鍚堣</h4><span>6棰?/span></div>
+<div class="module-item"><div class="module-icon">馃懆鈥嶐煈┾€嶐煈?/div><h4>浼佷笟娌荤悊涓庝紶鎵?/h4><span>6棰?/span></div>
+<div class="module-item"><div class="module-icon">鈿?/div><h4>浜夎瑙ｅ喅涓庡簲瀵?/h4><span>6棰?/span></div>
+</div>
+</div>
+<div class="cta-section">
+<h2>浣犵殑浼佷笟锛屾槸鍚﹂殣钘忕潃娉曞緥椋庨櫓锛?/h2>
+<p>5鍒嗛挓锛屽畬鎴愪笓涓氱骇娉曞緥鍋ュ悍妫€鏌?/p>
+<button class="cta-btn" onclick="showPage('loginPage')">鍏嶈垂寮€濮嬩綋妫€ 鈫?/button>
+</div>
+<div class="footer"><p>漏 2024 浼佷笟娉曞緥椋庨櫓鏅鸿兘浣撴骞冲彴</p></div>
+</div>
+
+<div id="loginPage" class="page">
+<div class="login-page">
+<div class="login-box">
+<h2>浼佷笟娉曞緥椋庨櫓鏅鸿兘浣撴</h2>
+<form onsubmit="handleLogin(event)">
+<div class="form-group">
+<label>鎵嬫満鍙风爜</label>
+<div class="sms-row">
+<input type="tel" id="phone" class="form-input" placeholder="璇疯緭鍏?1浣嶆墜鏈哄彿" maxlength="11" required>
+<button type="button" class="sms-btn" onclick="sendSMS()">鑾峰彇楠岃瘉鐮?/button>
+</div>
+</div>
+<div class="form-group">
+<label>楠岃瘉鐮?/label>
+<input type="text" id="smsCode" class="form-input" placeholder="璇疯緭鍏ラ獙璇佺爜" maxlength="6" required>
+</div>
+<div class="terms">
+<label><input type="checkbox" required> 鎴戝凡闃呰骞跺悓鎰?a href="#">銆婄敤鎴锋湇鍔″崗璁€?/a>鍜?a href="#">銆婇殣绉佹斂绛栥€?/a></label>
+</div>
+<button type="submit" class="submit-btn">鐧?褰?/button>
+</form>
+<div class="back-link"><a href="#" onclick="showPage('introPage');return false;">杩斿洖棣栭〉</a></div>
+</div>
+</div>
+</div>
+
+<div id="companyPage" class="page">
+<div class="company-page">
+<div class="login-box">
+<h2>浼佷笟淇℃伅</h2>
+<form onsubmit="handleCompanySubmit(event)">
+<div class="form-group"><label>浼佷笟鍚嶇О</label><input type="text" id="companyName" class="form-input" placeholder="璇疯緭鍏ヤ紒涓氬叏绉? required></div>
+<div class="form-group">
+<label>鎵€灞炶涓?/label>
+<select id="industry" class="form-input" required>
+<option value="">璇烽€夋嫨</option>
+<option>绉戞妧/浜掕仈缃?/option><option>鍟嗚锤/闆跺敭</option><option>鐢熶骇/鍒堕€?/option>
+<option>鏈嶅姟/鍜ㄨ</option><option>閲戣瀺/鎶曡祫</option><option>鏁欒偛鍩硅</option>
+<option>鍖荤枟鍋ュ悍</option><option>鍏朵粬</option>
+</select>
+</div>
+<div class="form-group">
+<label>浼佷笟瑙勬ā</label>
+<select id="companySize" class="form-input" required>
+<option value="">璇烽€夋嫨</option>
+<option>1-10浜?/option><option>11-50浜?/option><option>51-100浜?/option>
+<option>101-500浜?/option><option>500浜轰互涓?/option>
+</select>
+</div>
+<div class="form-group"><label>鑱旂郴浜?/label><input type="text" id="contactName" class="form-input" placeholder="璇疯緭鍏ュ鍚? required></div>
+<div class="form-group"><label>鑱旂郴鐢佃瘽</label><input type="tel" id="contactPhone" class="form-input" placeholder="璇疯緭鍏ョ數璇? required></div>
+<button type="submit" class="submit-btn">寮€濮嬩綋妫€</button>
+</form>
+<div class="back-link"><a href="#" onclick="showPage('introPage');return false;">杩斿洖棣栭〉</a></div>
+</div>
+</div>
+</div>
+
+<div id="lawyerPage" class="page">
+<div class="lawyer-page">
+<div class="lawyer-hero">
+<h1>鎮ㄧ殑浼佷笟娉曞緥椋庨櫓闃叉帶涓撳</h1>
+<p>27骞翠紒涓氭硶寰嬫湇鍔＄粡楠?路 绱鏈嶅姟1000+浼佷笟瀹㈡埛</p>
+</div>
+<div class="lawyer-content">
+<div class="lawyer-section">
+<h2>馃捈 涓撲笟棰嗗煙</h2>
+<div class="lawyer-tags">
+<span class="lawyer-tag">馃搵 浼佷笟甯稿勾娉曞緥椤鹃棶</span>
+<span class="lawyer-tag">馃挵 鑲℃潈涓庡叕鍙告不鐞?/span>
+<span class="lawyer-tag">馃懃 鍔冲姩鍚堣</span>
+<span class="lawyer-tag">馃彿锔?鐭ヨ瘑浜ф潈</span>
+<span class="lawyer-tag">鈿栵笍 鍟嗕笟璇夎</span>
+<span class="lawyer-tag">馃 鎶曡瀺璧勫苟璐?/span>
+</div>
+</div>
+<div class="lawyer-section">
+<h2>馃幆 鎮ㄦ槸鍚﹂潰涓磋繖浜涘洶鎵帮紵</h2>
+<div class="lawyer-concerns">
+<div>鉂?鍚堝悓闄烽槺闃蹭笉鑳滈槻</div>
+<div>鉂?鍛樺伐绠＄悊绋嶆湁涓嶆厧鎯逛笂瀹樺徃</div>
+<div>鉂?鑲℃潈璁捐鍩嬩笅闅愭偅</div>
+<div>鉂?鐭ヨ瘑浜ф潈琚镜鐘?/div>
+<div>鉂?鎶曡祫铻嶈祫鏉℃鐪嬩笉鎳?/div>
+</div>
+</div>
+<div class="lawyer-section">
+<h2>鉁?閫夋嫨鐜嬪緥甯?/h2>
+<div class="lawyer-benefits">
+<div class="lawyer-benefit"><div class="lawyer-benefit-icon">馃幆</div><div><strong>涓撲笟</strong><p>娣辫€曚紒涓氭硶寰?/p></div></div>
+<div class="lawyer-benefit"><div class="lawyer-benefit-icon">馃洝锔?/div><div><strong>闈犺氨</strong><p>27骞撮浂鎶曡瘔</p></div></div>
+<div class="lawyer-benefit"><div class="lawyer-benefit-icon">鈿?/div><div><strong>楂樻晥</strong><p>蹇€熷搷搴?/p></div></div>
+<div class="lawyer-benefit"><div class="lawyer-benefit-icon">馃拵</div><div><strong>瓒呭€?/strong><p>鍒涢€犲晢涓氫环鍊?/p></div></div>
+</div>
+</div>
+<div class="lawyer-stats">
+<div class="lawyer-stat"><div class="num">27骞?/div><div class="label">鎵т笟骞撮檺</div></div>
+<div class="lawyer-stat"><div class="num">1000+</div><div class="label">鏈嶅姟浼佷笟</div></div>
+<div class="lawyer-stat"><div class="num">3000+</div><div class="label">浠ｇ悊妗堜欢</div></div>
+<div class="lawyer-stat"><div class="num">99%</div><div class="label">瀹㈡埛婊℃剰</div></div>
+</div>
+<div class="lawyer-contact">
+<h2>馃摓 绔嬪嵆鍜ㄨ</h2>
+<p>涓撲笟寰嬪笀涓€瀵逛竴鏈嶅姟</p>
+<div class="phone">15301088801</div>
+</div>
+<div class="lawyer-back"><button onclick="showPage('introPage')">杩斿洖棣栭〉</button></div>
+</div>
+</div>
+</div>
+
+<div id="aboutPage" class="page">
+<div class="info-page">
+<div class="info-card">
+<h2 style="color:#1a365d;margin-bottom:16px">鍏充簬鎴戜滑</h2>
+<p style="color:#666;line-height:1.8;margin-bottom:20px">浼佷笟娉曞緥椋庨櫓鏅鸿兘浣撴骞冲彴锛岀敱鐜嬮噾骞冲緥甯堝洟闃熷€惧姏鎵撻€犮€傚熀浜?7骞翠紒涓氭硶寰嬫湇鍔＄粡楠岋紝灏嗗鏉傜殑娉曞緥椋庨櫓鎺掓煡杞寲涓虹畝鍗曟槗鎳傜殑鍦ㄧ嚎鑷祴宸ュ叿銆?/p>
+<h3 style="color:#1a365d;margin-bottom:12px">鎴戜滑鐨勪紭鍔?/h3>
+<div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;text-align:center">
+<div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">馃搵</div><div style="font-size:13px;color:#1a365d">13澶фā鍧?/div></div>
+<div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">馃幆</div><div style="font-size:13px;color:#1a365d">涓撲笟璇勪及</div></div>
+<div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">鈿?/div><div style="font-size:13px;color:#1a365d">5鍒嗛挓鍑虹粨鏋?/div></div>
+<div style="background:#f8fafc;padding:16px;border-radius:10px"><div style="font-size:24px">馃敀</div><div style="font-size:13px;color:#1a365d">鏁版嵁瀹夊叏</div></div>
+</div>
+<div class="lawyer-back" style="margin-top:24px"><button onclick="showPage('introPage')">杩斿洖棣栭〉</button></div>
+</div>
+</div>
+</div>
+
+<div id="contactPage" class="page">
+<div class="info-page">
+<div class="info-card">
+<h2 style="color:#1a365d;margin-bottom:16px">鑱旂郴鎴戜滑</h2>
+<div style="margin:20px 0">
+<div style="font-size:48px;text-align:center">馃懆鈥嶐煉?/div>
+<h3 style="color:#1a365d;margin-top:12px">鐜嬮噾骞?寰嬪笀</h3>
+<p style="color:#888;margin-bottom:20px">鍖椾含澶ф垚寰嬪笀浜嬪姟鎵€ 路 楂樼骇鍚堜紮浜?/p>
+</div>
+<div style="background:#f8fafc;padding:20px;border-radius:12px;margin-bottom:20px">
+<div style="font-size:24px;text-align:center;color:#1a365d;font-weight:700">馃摓 15301088801</div>
+</div>
+<div class="lawyer-back"><button onclick="showPage('introPage')">杩斿洖棣栭〉</button></div>
+</div>
+</div>
+</div>
+
+<div id="adminPage" class="page">
+<div class="admin-page">
+<div style="text-align:center;margin-bottom:30px">
+<h1 style="color:#1a365d;font-size:24px">鍚庡彴绠＄悊</h1>
+<p style="color:#888">鏌ョ湅浣撴鏁版嵁涓庡鎴风嚎绱?/p>
+</div>
+<div style="max-width:800px;margin:0 auto">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:30px">
+<div style="background:white;padding:24px;border-radius:12px;text-align:center">
+<div style="font-size:32px;font-weight:800;color:#1a365d" id="adminTotal">0</div>
+<div style="font-size:13px;color:#888;margin-top:6px">浣撴鎬绘暟</div>
+</div>
+<div style="background:white;padding:24px;border-radius:12px;text-align:center">
+<div style="font-size:32px;font-weight:800;color:#ef4444" id="adminHigh">0</div>
+<div style="font-size:13px;color:#888;margin-top:6px">楂橀闄╀紒涓?/div>
+</div>
+<div style="background:white;padding:24px;border-radius:12px;text-align:center">
+<div style="font-size:32px;font-weight:800;color:#22c55e" id="adminContacted">0</div>
+<div style="font-size:13px;color:#888;margin-top:6px">宸茶仈绯诲緥甯?/div>
+</div>
+</div>
+<div style="background:white;border-radius:12px;padding:20px">
+<div style="font-size:16px;font-weight:600;color:#1a365d;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #eee">鏈€杩戜綋妫€璁板綍</div>
+<div id="adminList">
+<div style="text-align:center;padding:40px;color:#ccc">鏆傛棤浣撴鏁版嵁</div>
+</div>
+</div>
+</div>
+<div style="text-align:center;margin-top:30px">
+<button onclick="loadAdminData()" style="background:#1a365d;color:white;border:none;padding:12px 30px;border-radius:8px;cursor:pointer;margin-right:10px">鍒锋柊鏁版嵁</button>
+<button onclick="showPage('introPage')" style="background:#666;color:white;border:none;padding:12px 30px;border-radius:8px;cursor:pointer">杩斿洖棣栭〉</button>
+</div>
+</div>
+</div>
+
+<div id="quizPage" class="page">
+<div class="quiz-page">
+<div class="progress" id="progressBar" style="display:none">
+<div class="progress-info"><span id="currentModuleName">妯″潡鍚嶇О</span><span id="progressPercent">0%</span></div>
+<div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+</div>
+<div id="quizContent"></div>
+</div>
+</div>
+
+<div id="resultPage" class="page">
+<div class="result-header">
+<div class="score-box" id="scoreCircle"><span class="score-val" id="scoreVal">0</span><span class="score-label">椋庨櫓璇勫垎</span></div>
+<h2 id="resultTitle">妫€娴嬬粨鏋?/h2>
+<p id="resultSubtitle">鎮ㄧ殑浼佷笟娉曞緥椋庨櫓姒傚喌</p>
+</div>
+<div class="result-stats">
+<div class="risk-grid">
+<div class="risk-card"><div class="num" style="color:#ef4444" id="highCount">0</div><div class="label">楂橀闄╅」</div></div>
+<div class="risk-card"><div class="num" style="color:#f59e0b" id="mediumCount">0</div><div class="label">涓闄╅」</div></div>
+<div class="risk-card"><div class="num" style="color:#22c55e" id="lowCount">0</div><div class="label">浣庨闄╅」</div></div>
+</div>
+</div>
+<div class="result-body">
+<h3 style="color:#1a365d;margin-bottom:16px;font-size:16px">鍚勬ā鍧楅闄╄瘎浼?/h3>
+<div class="module-list" id="moduleList"></div>
+<h3 style="color:#1a365d;margin:20px 0 16px;font-size:16px">閲嶇偣椋庨櫓鍙婂缓璁?/h3>
+<div id="riskDetail"></div>
+</div>
+<div class="result-footer">
+<h3>闇€瑕佷笓涓氬緥甯堝崗鍔╋紵</h3>
+<p>鎴戜滑鐨勫緥甯堝洟闃熷彲涓烘偍鎻愪緵涓€瀵逛竴鏈嶅姟</p>
+<div class="cta-btns">
+<button class="cta-btn2 primary" onclick="contactLawyer()">馃摓 绔嬪嵆鍜ㄨ寰嬪笀</button>
+<button class="cta-btn2 secondary" onclick="downloadReport()">馃摜 涓嬭浇瀹屾暣鎶ュ憡</button>
+</div>
+</div>
+</div>
+
+<script>
+var modules=[
+{id:"basic",icon:"馃搵",title:"浼佷笟鍩虹鍚堣",questions:[
+{q:"钀ヤ笟鎵х収缁忚惀鑼冨洿鏄惁涓庡疄闄呬笟鍔″畬鍏ㄥ尮閰嶏紵",opts:["瀹屽叏鍖归厤","閮ㄥ垎鍖归厤","涓嶅尮閰?],sug:["缁х画淇濇寔","寤鸿灏藉揩鍙樻洿缁忚惀鑼冨洿","瓒呰寖鍥寸粡钀ラ潰涓村缃?]},
+{q:"鍏徃绔犵▼鏄惁缁忚繃涓撲笟寰嬪笀瀹℃牳锛?,opts:["鏄紝宸插鏍?,"鍚︼紝浣跨敤妯℃澘","涓嶇‘瀹?],sug:["寤鸿瀹氭湡瀹℃牳","妯℃澘鍙兘涓嶆弧瓒抽渶姹?,"寤鸿鑱樿寰嬪笀瀹℃牳"]},
+{q:"鑲′笢涔嬮棿鏄惁绛捐浜嗕功闈㈠崗璁紵",opts:["鏈夊畬鏁村崗璁?,"鍙湁鍙ｅご绾﹀畾","娌℃湁浠讳綍鍗忚"],sug:["寤鸿瀹氭湡瀹℃煡","鍙ｅご闅句互涓捐瘉","鏃犲崗璁彲鑳戒骇鐢熺籂绾?]},
+{q:"鍏珷銆佽储鍔＄珷銆佹硶浜虹珷鐨勭鐞嗘槸鍚﹁鑼冿紵",opts:["涓撲汉淇濈锛屾湁鐧昏","澶氫汉鍙帴瑙?,"绠＄悊娣蜂贡"],sug:["寤鸿瀹氭湡瀹¤","寤鸿寤虹珛鐧昏鍒跺害","寤鸿涓撲汉绠＄悊"]},
+{q:"浼佷笟骞存姤鏄惁鎸夋椂鍏ず锛?,opts:["姣忓勾鎸夋椂","鍋跺皵寤惰繜","鏈叕绀?],sug:["缁х画淇濇寔","鍙兘琚垪鍏ュ紓甯?,"鏈叕绀哄奖鍝嶄俊鐢?]},
+{q:"娉ㄥ唽璧勬湰璁ょ即鏈熼檺鏄惁瀛樺湪椋庨櫓锛?,opts:["鏈熼檺鍚堢悊","鏈熼檺杈冮暱","宸插埌鏈熸湭瀹炵即"],sug:["缁х画淇濇寔","鍙兘褰卞搷铻嶈祫","闇€灏藉揩瀹炵即鎴栧彉鏇?]}
+]},
+{id:"equity",icon:"馃挵",title:"鑲℃潈铻嶈祫鍚堣",questions:[
+{q:"鑲℃潈缁撴瀯鏄惁娓呮櫚锛?,opts:["娓呮櫚閫忔槑","瀛樺湪浠ｆ寔","涓嶇‘瀹?],sug:["缁х画淇濇寔","浠ｆ寔瀛樺湪椋庨櫓","寤鸿姊崇悊鑲℃潈"]},
+{q:"鏄惁绛捐杩囧璧屽崗璁紵",opts:["鏃?,"鏈夛紝鏉℃鍚堢悊","鏈夛紝鏉℃涓ヨ嫑"],sug:["缁х画淇濇寔","鏉℃鍚堢悊","寤鸿璇勪及椋庨櫓"]},
+{q:"鏄惁璁剧珛浜嗗憳宸ユ湡鏉冩睜锛?,opts:["宸茶绔?,"鏈夋兂娉曟湭钀藉湴","娌℃湁璁剧珛"],sug:["寤鸿璇勪及鏁堟灉","寤鸿灏藉揩钀藉湴","鍙€冭檻璁剧珛鍚稿紩浜烘墠"]},
+{q:"铻嶈祫鍗忚鏄惁缁忚繃寰嬪笀瀹℃牳锛?,opts:["鏄紝涓撲笟瀹℃牳","鑷瀹￠槄","鏈鏍?],sug:["缁х画淇濇寔","寤鸿鑱樿寰嬪笀","鏈鏍稿彲鑳藉瓨鍦ㄩ殣鎮?]},
+{q:"鍒涘浜鸿偂鏉冩槸鍚︽湁閿佸畾瀹夋帓锛?,opts:["鏃犻攣瀹?,"鏈熼檺鍚堢悊","鏈熼檺杩囬暱"],sug:["寤鸿璁剧疆閿佸畾","鏈熼檺鍚堢悊","杩囬暱鍙兘褰卞搷绉瀬鎬?]},
+{q:"鏄惁瀛樺湪涓€绁ㄥ惁鍐虫潈绛夌壒娈婃潯娆撅紵",opts:["鏃犵壒娈婃潯娆?,"鏈変絾褰卞搷灏?,"鏈夛紝褰卞搷閲嶅ぇ"],sug:["淇濇寔绠€娲佺粨鏋?,"褰卞搷鍙帶","寤鸿浼樺寲鑲℃潈缁撴瀯"]}
+]},
+{id:"labor",icon:"馃懃",title:"鍔冲姩鐢ㄥ伐鍚堣",questions:[
+{q:"鍔冲姩鍚堝悓绛捐鐜囨槸澶氬皯锛?,opts:["100%绛捐","閮ㄥ垎绛捐","鏈璁?],sug:["缁х画淇濇寔","鏈鍛樺伐鍙富寮犲弻鍊嶅伐璧?,"鏈瀛樺湪閲嶅ぇ椋庨櫓"]},
+{q:"绀句繚鍏Н閲戞槸鍚︽寜鏃惰冻棰濈即绾筹紵",opts:["鎸夋椂瓒抽","鎸夋渶浣庡熀鏁?,"鏈即绾?],sug:["缁х画淇濇寔鍚堣","鍛樺伐鍙拷缂村樊棰?,"鍙兘闈复澶勭綒"]},
+{q:"鏄惁涓庢牳蹇冨憳宸ョ璁㈢珵涓氶檺鍒跺崗璁紵",opts:["宸茬璁?,"閮ㄥ垎绛捐","鏈璁?],sug:["寤鸿瀹氭湡瀹℃煡","寤鸿琛ュ厖绛捐","寤鸿瀵规牳蹇冨憳宸ョ璁?]},
+{q:"鍔犵彮宸ヨ祫璁＄畻鏄惁鍚堣锛?,opts:["瀹屽叏鍚堣","閮ㄥ垎鍚堣","涓嶅悎瑙?],sug:["缁х画淇濇寔","鍛樺伐鍙兘杩借","鍙兘闈复浠茶"]},
+{q:"璇曠敤鏈熺害瀹氭槸鍚︾鍚堟硶寰嬭瀹氾紵",opts:["瀹屽叏绗﹀悎","閮ㄥ垎闂","瀛樺湪闂"],sug:["缁х画淇濇寔","娉ㄦ剰鏃堕暱鍜屽伐璧?,"杩濇硶闇€鏀粯璧斿伩閲?]},
+{q:"鏄惁绛捐浜嗕繚瀵嗗崗璁紵",opts:["鍏ㄥ憳绛捐","閮ㄥ垎绛捐","鏈璁?],sug:["缁х画淇濇寔瑕嗙洊","寤鸿琛ュ厖绛捐","寤鸿鍏ㄥ憳绛捐"]},
+{q:"鐏垫椿鐢ㄥ伐/澶栧寘鏄惁鍚堣锛?,opts:["鍚堣","瀛樺湪椋庨櫓","澶ч噺浣嗕笉鍚堣"],sug:["缁х画淇濇寔","娉ㄦ剰澶栧寘鍚堣鎬?,"涓嶅悎瑙勫彲鑳借繛甯﹁矗浠?]},
+{q:"瑁佸憳绋嬪簭鏄惁鍚堟硶锛?,opts:["鏈繘琛岃繃","绋嬪簭鍚堟硶","瀛樺湪杩濇硶"],sug:["瑁佸憳闇€绗﹀悎绋嬪簭","绋嬪簭鍚堟硶浣嗚皑鎱?,"杩濇硶瑁佸憳闇€鍙屽€嶈禂鍋?]}
+]},
+{id:"contract",icon:"馃摑",title:"鍚堝悓浜ゆ槗鍚堣",questions:[
+{q:"鏍稿績涓氬姟鏄惁鏈変功闈㈠悎鍚岋紵",opts:["鍏ㄩ儴涔﹂潰","閮ㄥ垎鍙ｅご","澶ч噺鍙ｅご"],sug:["缁х画淇濇寔","鍙ｅご闅句互涓捐瘉","寤鸿鍏ㄩ儴涔﹂潰绛捐"]},
+{q:"鍚堝悓涓讳綋鏄惁鍑嗙‘鏃犺锛?,opts:["涓ユ牸瀹℃牳","鍋跺皵鍑洪敊","缁忓父娣锋穯"],sug:["缁х画淇濇寔","涓讳綋閿欒鍙兘鏃犳晥","寤鸿寤虹珛瀹℃牳鍒跺害"]},
+{q:"浠樻鏉℃鏄惁鏄庣‘绾﹀畾锛?,opts:["鏄庣‘娓呮櫚","閮ㄥ垎妯＄硦","缁忓父浜夎"],sug:["缁х画淇濇寔","妯＄硦鍙兘寮曞彂浜夎","寤鸿浣跨敤鏍囧噯妯℃澘"]},
+{q:"杩濈害璐ｄ换鏉℃鏄惁瀹屽杽锛?,opts:["瀹屽杽鏄庣‘","瀛樺湪婕忔礊","鏈害瀹?],sug:["缁х画淇濇寔","寤鸿琛ュ厖杩濈害鏉℃","鏃犺繚绾︽潯娆鹃毦浠ョ淮鏉?]},
+{q:"浜夎瑙ｅ喅鏉℃鏄惁绾﹀畾锛?,opts:["宸茬害瀹?,"浠呯害瀹氭柟寮?,"鏈害瀹?],sug:["缁х画淇濇寔","寤鸿鏄庣‘绠¤緰娉曢櫌","鏈害瀹氬鍔犵淮鏉冩垚鏈?]},
+{q:"鐭ヨ瘑浜ф潈褰掑睘鏄惁鏄庣‘锛?,opts:["鏄庣‘绾﹀畾","閮ㄥ垎绾﹀畾","鏈害瀹?],sug:["缁х画淇濇寔","寤鸿琛ュ厖IP褰掑睘","IP褰掑睘涓嶆槑瀵艰嚧绾犵悍"]},
+{q:"鍚堝悓瀹℃壒娴佺▼鏄惁瑙勮寖锛?,opts:["鏈夊畬鏁存祦绋?,"娴佺▼涓嶅畬鍠?,"鏃犲鎵?],sug:["缁х画淇濇寔","寤鸿瀹屽杽瀹℃壒","鏃犲鎵归闄╄緝澶?]}
+]},
+{id:"criminal",icon:"馃毃",title:"鍒戜簨椋庨櫓闃叉帶",questions:[
+{q:"鏄惁瀛樺湪铏氬紑澧炲€肩◣鍙戠エ鎯呭喌锛?,opts:["鏃?,"鍋跺皵","缁忓父"],sug:["缁х画淇濇寔","铏氬紑灞炲垜浜嬬姱缃?,"鍙兘闈复鐗㈢嫳涔嬬伨"]},
+{q:"鏄惁瀛樺湪楠楀彇璐锋琛屼负锛?,opts:["鏃?,"瀛樺湪鍙兘","宸插彂鐢?],sug:["缁х画淇濇寔","楠楄捶灞炲垜浜嬬姱缃?,"鍙兘闈复鍒戜簨璐ｄ换"]},
+{q:"鏄惁瀛樺湪闈炴硶闆嗚祫鎯呭喌锛?,opts:["鏃?,"瀛樺湪鍙兘","宸插彂鐢?],sug:["缁х画淇濇寔","闈炴硶闆嗚祫灞炲垜浜嬬姱缃?,"鍙兘闈复閲嶅垜"]},
+{q:"鏄惁瀛樺湪鍟嗕笟璐胯祩琛屼负锛?,opts:["鏃?,"鍋跺皵","缁忓父"],sug:["缁х画淇濇寔鍚堣","鍟嗕笟璐胯祩灞炲垜浜嬬姱缃?,"鍙兘闈复鍒戜簨璐ｄ换"]},
+{q:"璐㈠姟浜哄憳鏄惁鍏峰涓撲笟璧勮川锛?,opts:["鏄紝涓撲笟璧勮川","鏈変絾鏃犺祫璐?,"鏃犱笓涓氳储鍔?],sug:["缁х画淇濇寔","鏃犺祫璐ㄥ鍔犻闄?,"寤鸿鑱樿鏈夎祫璐ㄨ储鍔?]},
+{q:"璧勯噾娴佸悜鏄惁娓呮櫚鍙拷婧紵",opts:["瀹屽叏娓呮櫚","鍩烘湰娓呮櫚","涓嶆竻鏅?],sug:["缁х画淇濇寔","寤鸿瀹屽杽璧勯噾绠＄悊","涓嶆竻鏅板彲鑳芥秹鍙婂垜浜嬮闄?]},
+{q:"鏄惁瀛樺湪杩濊璧勯噾鍑哄锛?,opts:["鏃?,"瀛樺湪鍙兘","宸插彂鐢?],sug:["缁х画淇濇寔","杩濊璧勯噾鍑哄杩濇硶","鍙兘闈复杩借矗"]},
+{q:"鏄惁瀵归珮绠¤繘琛屽垜浜嬫硶寰嬪煿璁紵",opts:["瀹氭湡鍩硅","鍋跺皵鍩硅","鏃犲煿璁?],sug:["缁х画淇濇寔","寤鸿鍔犲己鍩硅","楂樼鍒戜簨鎰忚瘑钖勫急"]}
+]},
+{id:"ip",icon:"馃彿锔?,title:"鐭ヨ瘑浜ф潈鍚堣",questions:[
+{q:"鏍稿績鍟嗘爣鏄惁宸叉敞鍐岋紵",opts:["宸叉敞鍐?,"鐢宠涓?,"鏈敞鍐?],sug:["缁х画淇濇寔","寤鸿鍔犲揩娉ㄥ唽","鏈敞鍐屽彲鑳借鎶㈡敞"]},
+{q:"鏄惁瀛樺湪鍟嗘爣琚姠娉ㄩ闄╋紵",opts:["鏃犻闄?,"瀛樺湪鍙兘","宸茶鎶㈡敞"],sug:["缁х画淇濇寔鐩戞帶","寤鸿闃插尽鎬ф敞鍐?,"鎶㈡敞鍚庣淮鏉冩垚鏈珮"]},
+{q:"鏍稿績涓撳埄鏄惁宸茬敵璇凤紵",opts:["宸茬敵璇?鎺堟潈","鐢宠涓?,"鏈敵璇?],sug:["缁х画淇濇寔涓撳埄甯冨眬","寤鸿鍔犲揩鐢宠","鏈敵璇峰彲鑳戒抚澶辨柊棰栨€?]},
+{q:"钁椾綔鏉冩槸鍚﹁繘琛岀櫥璁颁繚鎶わ紵",opts:["宸茬櫥璁?,"閮ㄥ垎鐧昏","鏈櫥璁?],sug:["缁х画淇濇寔","寤鸿瀵归噸瑕佷綔鍝佺櫥璁?,"鏈櫥璁颁妇璇佸洶闅?]},
+{q:"鍩熷悕鏄惁杩涜浜嗕繚鎶ゆ€ф敞鍐岋紵",opts:["宸蹭繚鎶?,"閮ㄥ垎淇濇姢","鏈繚鎶?],sug:["缁х画淇濇寔","寤鸿杩涜淇濇姢","鍩熷悕琚姠娉ㄥ奖鍝嶅搧鐗?]},
+{q:"鏄惁瀛樺湪渚电姱浠栦汉IP鐨勯闄╋紵",opts:["鏃犻闄?,"瀛樺湪鍙兘","宸叉敹鍒颁镜鏉冮€氱煡"],sug:["缁х画淇濇寔鍚堣","寤鸿杩涜渚垫潈鎺掓煡","渚垫潈闈复楂橀璧斿伩"]},
+{q:"鍛樺伐绂昏亴鏄惁甯﹁蛋鎶€鏈?瀹㈡埛锛?,opts:["鏃犳鎯呭喌","鍋舵湁鍙戠敓","缁忓父鍙戠敓"],sug:["缁х画淇濇寔鐩戞帶","寤鸿瀹屽杽绂昏亴鍒跺害","寤鸿绛捐绔炰笟闄愬埗"]}
+]},
+{id:"data",icon:"馃敀",title:"鏁版嵁瀹夊叏鍚堣",questions:[
+{q:"鏄惁鍒跺畾浜嗛殣绉佹斂绛栵紵",opts:["宸插埗瀹氬苟鍏ず","鏈変絾鏈叕绀?,"鏈埗瀹?],sug:["缁х画淇濇寔骞跺畾鏈熸洿鏂?,"寤鸿鍦ㄥ畼缃戝叕绀?,"鏃犻殣绉佹斂绛栬繚鍙嶃€婁釜淇濇硶銆?]},
+{q:"鐢ㄦ埛鏁版嵁鏀堕泦鏄惁鑾峰緱鎺堟潈锛?,opts:["鏄庣‘鎺堟潈","閮ㄥ垎鎺堟潈","鏈巿鏉?],sug:["缁х画淇濇寔鍚堣鏀堕泦","寤鸿琛ュ厖鎺堟潈","鏈巿鏉冩敹闆嗚繚娉?]},
+{q:"鏁版嵁瀛樺偍鏄惁閲囧彇瀹夊叏鎺柦锛?,opts:["鏈夊畬鍠勬帾鏂?,"鍩烘湰鎺柦","鏃犱笓闂ㄦ帾鏂?],sug:["缁х画淇濇寔锛屽畾鏈熷璁?,"寤鸿鍔犲己瀹夊叏鎺柦","娉勯湶闈复宸ㄩ缃氭"]},
+{q:"鏄惁闇€瑕佽繘琛岃法澧冩暟鎹紶杈擄紵",opts:["涓嶉渶瑕?,"姝ｅ湪杩涜","宸茶法澧冧紶杈?],sug:["缁х画淇濇寔","璺ㄥ闇€鍚堣瀹℃壒","杩濊璺ㄥ杩濇硶"]},
+{q:"鏄惁閫氳繃缃戠粶瀹夊叏绛夌骇淇濇姢锛?,opts:["宸查€氳繃绛変繚","姝ｅ湪鐢宠","鏈敵璇?],sug:["缁х画淇濇寔","寤鸿鍔犲揩鐢宠","鏈繃绛変繚闈复澶勭綒"]},
+{q:"Cookie浣跨敤鏄惁鍚堣锛?,opts:["鍚堣锛屾湁寮圭獥","閮ㄥ垎鍚堣","涓嶅悎瑙?],sug:["缁х画淇濇寔","寤鸿瀹屽杽Cookie鏈哄埗","杩濊浣跨敤Cookie杩濇硶"]},
+{q:"鏄惁寤虹珛浜嗘暟鎹垎绫诲垎绾х鐞嗭紵",opts:["宸插缓绔?,"姝ｅ湪寤虹珛","鏈缓绔?],sug:["缁х画淇濇寔骞朵紭鍖?,"寤鸿鍔犲揩寤虹珛","鏃犲垎绫诲垎绾ч闄╁ぇ"]},
+{q:"鏄惁瀹氭湡杩涜鏁版嵁瀹夊叏鍩硅锛?,opts:["瀹氭湡鍩硅","鍋跺皵鍩硅","鏃犲煿璁?],sug:["缁х画淇濇寔","寤鸿鍔犲己鍩硅","鍛樺伐鏁版嵁瀹夊叏鎰忚瘑寮?]}
+]},
+{id:"tax",icon:"馃挼",title:"绋庡姟椋庨櫓鍚堣",questions:[
+{q:"鍙戠エ绠＄悊鏄惁瑙勮寖锛?,opts:["闈炲父瑙勮寖","鍩烘湰瑙勮寖","瀛樺湪涓嶈鑼?],sug:["缁х画淇濇寔","寤鸿鍔犲己鍙戠エ瀹℃牳","涓嶈鑼冨彂绁ㄥ紩鍙戦闄?]},
+{q:"鍏宠仈浜ゆ槗瀹氫环鏄惁鍚堢悊锛?,opts:["鍚堢悊锛屾湁鏂囨。","鍚堢悊锛屾棤鏂囨。","鍙兘涓嶅悎鐞?],sug:["缁х画淇濇寔锛屽噯澶囨枃妗?,"寤鸿鍑嗗杞瀹氫环","涓嶅悎鐞嗗彲鑳借璋冩暣"]},
+{q:"鑲℃潈婵€鍔辩◣鍔″鐞嗘槸鍚︽纭紵",opts:["姝ｇ‘澶勭悊","鏈鐞?,"涓嶇‘瀹?],sug:["缁х画淇濇寔","寤鸿鍜ㄨ绋庡姟椤鹃棶","澶勭悊涓嶅綋闈复琛ョ◣"]},
+{q:"涓汉鎵€寰楃◣鏄惁鎸夋椂浠ｆ墸浠ｇ即锛?,opts:["鎸夋椂瓒抽","鍋跺皵寤惰繜","鏈唬鎵ｄ唬缂?],sug:["缁х画淇濇寔","鍙兘闈复婊炵撼閲?,"鏈唬鎵ｄ唬缂寸綒娆?]},
+{q:"澧炲€肩◣浼樻儬璧勮川鏄惁鏈夋晥锛?,opts:["璧勮川鏈夋晥","璧勮川杩囨湡","鏈敵璇?],sug:["缁х画淇濇寔锛屾敞鎰忔湁鏁堟湡","璧勮川杩囨湡闇€琛ョ◣","鏈敵璇峰彲鑳藉缂寸◣"]},
+{q:"鏄惁瀛樺湪璐﹀鏀跺叆锛?,opts:["鏃?,"鍋跺皵","缁忓父"],sug:["缁х画淇濇寔","璐﹀鏀跺叆寮曞彂椋庨櫓","闅愬尶鏀跺叆灞炰簬鍋锋紡绋?]},
+{q:"绋庢敹浼樻儬鐢宠鏄惁鍚堣锛?,opts:["鍚堣鐢宠","鑷鍒ゆ柇","鏈敵璇?],sug:["缁х画淇濇寔鍚堣","寤鸿鍜ㄨ绋庡姟椤鹃棶","杩濊浜彈浼樻儬琛ョ◣"]}
+]},
+{id:"realestate",icon:"馃彚",title:"鎴夸骇涓庣璧佸悎瑙?,questions:[
+{q:"绉熻祦鍚堝悓鏄惁瑙勮寖锛?,opts:["瑙勮寖瀹屾暣","閮ㄥ垎鏉℃缂哄け","鏃犱功闈㈠悎鍚?],sug:["缁х画淇濇寔","寤鸿琛ュ厖缂哄け鏉℃","鏃犱功闈㈤毦浠ョ淮鏉?]},
+{q:"绉熼噾鏀粯鏄惁鎸夋椂锛?,opts:["鎸夋椂鏀粯","鍋跺皵寤惰繜","缁忓父寤惰繜"],sug:["缁х画淇濇寔","寤惰繜浜х敓杩濈害閲?,"缁忓父寤惰繜鏋勬垚杩濈害"]},
+{q:"鎴垮眿浜ф潈鏄惁娓呮櫚锛?,opts:["浜ф潈娓呮櫚","鏈夊叡鏈夋儏鍐?,"浜ф潈绾犵悍"],sug:["缁х画淇濇寔","鍏辨湁闇€鏄庣‘浠介","浜ф潈绾犵悍褰卞搷缁忚惀"]},
+{q:"瑁呬慨鏄惁瀛樺湪杩濊锛?,opts:["鏃犺繚瑙?,"杞诲井杩濊","涓ラ噸杩濊"],sug:["缁х画淇濇寔","寤鸿琛ュ姙瑁呬慨璁稿彲","涓ラ噸杩濊琚揩鎭㈠鍘熺姸"]},
+{q:"杞鏄惁缁忚繃鎴夸笢鍚屾剰锛?,opts:["鍚屾剰涔﹂潰纭","鍙ｅご鍚屾剰","鏈粡鍚屾剰"],sug:["缁х画淇濇寔","寤鸿鍙栧緱涔﹂潰纭","鏈粡鍚屾剰杞杩濈害"]},
+{q:"鐗╀笟璐规槸鍚︽寜鏃剁即绾筹紵",opts:["鎸夋椂缂寸撼","鍋跺皵娆犵即","闀挎湡娆犵即"],sug:["缁х画淇濇寔","娆犵即浜х敓婊炵撼閲?,"闀挎湡娆犵即鍙兘琚捣璇?]}
+]},
+{id:"environment",icon:"馃尶",title:"鐜繚瀹夊叏鍚堣",questions:[
+{q:"鐜繚璧勮川鏄惁榻愬叏锛?,opts:["璧勮川榻愬叏","閮ㄥ垎缂哄け","鏃犺祫璐?],sug:["缁х画淇濇寔","寤鸿琛ラ綈缂哄け璧勮川","鏃犺祫璐ㄩ潰涓村仠浜ф暣鏀?]},
+{q:"鏄惁閫氳繃鐜瘎锛?,opts:["宸查€氳繃鐜瘎","姝ｅ湪鍔炵悊","鏈姙鐞?],sug:["缁х画淇濇寔","寤鸿鍔犲揩鍔炵悊","鏈幆璇勯潰涓磋鏀垮缃?]},
+{q:"鎺掓薄鏄惁杈炬爣锛?,opts:["瀹屽叏杈炬爣","鍩烘湰杈炬爣","缁忓父瓒呮爣"],sug:["缁х画淇濇寔","寤鸿鍔犲己鎺掓薄绠＄悊","瓒呮爣闈复楂橀缃氭"]},
+{q:"瀹夊叏鐢熶骇鎺柦鏄惁鍒颁綅锛?,opts:["鎺柦瀹屽杽","鍩烘湰鍒颁綅","瀛樺湪闅愭偅"],sug:["缁х画淇濇寔","寤鸿鎺掓煡闅愭偅","瀹夊叏浜嬫晠鑷村垜浜嬭矗浠?]},
+{q:"鏄惁鍙戠敓杩囧畨鍏ㄤ簨鏁咃紵",opts:["鏃犱簨鏁?,"杞诲井浜嬫晠","閲嶅ぇ浜嬫晠"],sug:["缁х画淇濇寔瀹夊叏鐢熶骇","寤鸿鍒嗘瀽浜嬫晠鍘熷洜","閲嶅ぇ浜嬫晠鍋滀笟鏁存敼"]},
+{q:"搴旀€ラ妗堟槸鍚﹀畬鍠勶紵",opts:["瀹屽杽骞舵紨缁?,"鏈夐妗堟湭婕旂粌","鏃犻妗?],sug:["缁х画淇濇寔骞跺畾鏈熸紨缁?,"寤鸿瀹氭湡缁勭粐婕旂粌","鏃犻妗堝姞鍓т簨鏁呮崯澶?]}
+]},
+{id:"industry",icon:"鈿栵笍",title:"琛屼笟涓撻」鍚堣",questions:[
+{q:"琛屼笟璧勮川鏄惁榻愬叏锛?,opts:["璧勮川榻愬叏","閮ㄥ垎缂哄け","鏃犺祫璐?],sug:["缁х画淇濇寔","寤鸿琛ラ綈缂哄け璧勮川","鏃犺祫璐ㄦ棤娉曟甯哥粡钀?]},
+{q:"鏄惁闇€瑕佽鏀胯鍙紵",opts:["宸插彇寰楄鍙?,"姝ｅ湪鐢宠","鏈敵璇?],sug:["缁х画淇濇寔","寤鸿鍔犲揩鐢宠","鏈彇寰楄鍙潰涓村缃?]},
+{q:"浜у搧/鏈嶅姟鏄惁绗﹀悎琛屼笟鏍囧噯锛?,opts:["瀹屽叏绗﹀悎","鍩烘湰绗﹀悎","涓嶇鍚?],sug:["缁х画淇濇寔","寤鸿鎻愬崌鑷崇鍚堟爣鍑?,"涓嶇鍚堥潰涓村彫鍥炴垨澶勭綒"]},
+{q:"鏄惁瀛樺湪琛屼笟鍨勬柇椋庨櫓锛?,opts:["鏃犻闄?,"瀛樺湪鍙兘","宸叉秹鍙?],sug:["缁х画淇濇寔鍚堣绔炰簤","寤鸿鎺掓煡鍨勬柇椋庨櫓","鍨勬柇闈复鍙嶅瀯鏂皟鏌?]},
+{q:"骞垮憡瀹ｄ紶鏄惁鍚堣锛?,opts:["瀹屽叏鍚堣","閮ㄥ垎杩濊","涓ラ噸杩濊"],sug:["缁х画淇濇寔","寤鸿瀹℃煡骞垮憡鍐呭","杩濊骞垮憡闈复缃氭"]},
+{q:"浠锋牸鍒跺畾鏄惁鍚堣锛?,opts:["鍚堣","瀛樺湪浜夎","杩濊"],sug:["缁х画淇濇寔鍚堣瀹氫环","寤鸿鍜ㄨ浠锋牸娉曡","浠锋牸杩濊闈复澶勭綒"]}
+]},
+{id:"governance",icon:"馃懆鈥嶐煈┾€嶐煈?,title:"浼佷笟娌荤悊涓庝紶鎵?,questions:[
+{q:"瀹舵棌浼佷笟鑲℃潈鏋舵瀯鏄惁娓呮櫚锛?,opts:["鑲℃潈娓呮櫚锛屾棤浠ｆ寔","瀛樺湪浠ｆ寔浣嗗凡瑙勮寖","瀛樺湪浠ｆ寔鎴栭殣鍚嶈偂涓?],sug:["缁х画淇濇寔娓呮櫚鏋舵瀯","浠ｆ寔闇€灏藉揩瑙勮寖鍖?,"浠ｆ寔瀛樺湪閲嶅ぇ椋庨櫓"]},
+{q:"涓変細涓€灞傛不鐞嗘満鍒舵槸鍚﹀仴鍏紵",opts:["涓変細涓€灞傚仴鍏紝瑙勫垯瀹屽杽","鏈夊熀鏈灦鏋勪絾瑙勫垯涓嶅畬鍠?,"娌荤悊鏈哄埗缂哄け鎴栨贩涔?],sug:["缁х画淇濇寔娌荤悊瑙勮寖","寤鸿瀹屽杽涓変細璁簨瑙勫垯","娌荤悊涓嶅仴鍏ㄥ彲鑳藉紩鍙戠籂绾?]},
+{q:"瀹舵棌璧勪骇涓庝紒涓氳祫浜ф槸鍚︽贩鍚岋紵",opts:["璧勪骇瀹屽叏鍒嗙","閮ㄥ垎娣峰悓","涓ラ噸娣峰悓"],sug:["缁х画淇濇寔璧勪骇闅旂","寤鸿寤虹珛闅旂鍒跺害","璧勪骇娣峰悓鍙兘娑夊強椋庨櫓"]},
+{q:"鏄惁鍒跺畾浜嗕紶鎵挎柟妗堬紵",opts:["宸叉湁瀹屾暣浼犳壙鏂规","姝ｅ湪鍒跺畾涓?,"鏈埗瀹氫紶鎵挎柟妗?],sug:["缁х画淇濇寔骞跺畾鏈熸洿鏂?,"寤鸿鍔犲揩鍒跺畾杩涚▼","鏃犱紶鎵挎柟妗堝瓨鍦ㄤ紶鎵块闄?]},
+{q:"鏄惁寤虹珛浜嗗唴鎺ф満鍒讹紵",opts:["鍐呮帶鏈哄埗瀹屽杽","鏈夊熀鏈唴鎺?,"鏃犲唴鎺ф満鍒?],sug:["缁х画淇濇寔鍐呮帶鏈夋晥鎬?,"寤鸿鍔犲己鍐呮帶鍒跺害","鏃犲唴鎺у彲鑳介潰涓磋垶寮婇闄?]},
+{q:"璐㈠瘜浼犳壙宸ュ叿鏄惁鍚堣閫傜敤锛?,opts:["宸蹭娇鐢ㄥ悎瑙勫伐鍏?,"鏈夎€冭檻浣嗘湭瀹炴柦","鏈娇鐢ㄤ换浣曚紶鎵垮伐鍏?],sug:["缁х画淇濇寔鍚堣浣跨敤","寤鸿鍜ㄨ浼犳壙瑙勫垝","鏈鍒掍紶鎵垮彲鑳介潰涓磋储瀵岄闄?]}
+]},
+{id:"dispute",icon:"鈿?,title:"浜夎瑙ｅ喅涓庡簲瀵?,questions:[
+{q:"鏄惁寤虹珛浜嗙籂绾峰簲瀵规満鍒讹紵",opts:["鏈夊畬鍠勭殑绾犵悍搴斿鏈哄埗","鏈夊熀鏈祦绋嬩絾涓嶅畬鍠?,"鏃犵籂绾峰簲瀵规満鍒?],sug:["缁х画淇濇寔骞跺畾鏈熸紨缁?,"寤鸿瀹屽杽绾犵悍搴斿娴佺▼","鏃犳満鍒跺彲鑳介敊澶辩淮鏉冩椂鏈?]},
+{q:"甯歌浜夎鐨勮瘉鎹暀瀛樻槸鍚﹀畬鍠勶紵",opts:["璇佹嵁鐣欏瓨瀹屽杽","鏈夊熀鏈暀瀛樹絾涓嶅畬鏁?,"璇佹嵁绠＄悊娣蜂贡"],sug:["缁х画淇濇寔璇佹嵁绠＄悊","寤鸿鍔犲己璇佹嵁淇濆叏","璇佹嵁涓嶈冻鍙兘褰卞搷缁存潈"]},
+{q:"搴旀€ュ鐞嗘祦绋嬫槸鍚﹁鑼冿紵",opts:["鏈夊畬鍠勫簲鎬ユ祦绋?,"鏈夊熀鏈祦绋嬩絾涓嶈鑼?,"鏃犲簲鎬ユ祦绋?],sug:["缁х画淇濇寔骞跺畾鏈熷煿璁?,"寤鸿瑙勮寖搴旀€ュ鐞嗘祦绋?,"鏃犳祦绋嬪彲鑳藉姞閲嶅缃氬悗鏋?]},
+{q:"鏄惁鏈夋硶寰嬮【闂敮鎸侊紵",opts:["鏈夊父骞存硶寰嬮【闂?,"鍋跺皵鍜ㄨ寰嬪笀","鏃犳硶寰嬮【闂敮鎸?],sug:["缁х画淇濇寔娉曞緥椤鹃棶鏈嶅姟","寤鸿鑱樿甯稿勾娉曞緥椤鹃棶","鏃犻【闂彲鑳藉鍔犱簤璁В鍐虫垚鏈?]},
+{q:"鏄惁鍋氫簡椋庨櫓棰勬锛?,opts:["鏈夊畬鍠勯闄╅妗?,"鏈夌畝鍗曢妗堜絾涓嶅畬鍠?,"鏃犻闄╅妗?],sug:["缁х画淇濇寔骞跺畾鏈熸洿鏂?,"寤鸿瀹屽杽椋庨櫓棰勬","鏃犻妗堝彲鑳芥帾鎵嬩笉鍙?]},
+{q:"鎵ц闃舵鏉冨埄涓诲紶鏄惁瑙勮寖锛?,opts:["鏉冨埄涓诲紶瑙勮寖鏈夊簭","鏈夊熀鏈簡瑙ｄ絾涓嶈鑼?,"涓嶄簡瑙ｆ墽琛岀▼搴?],sug:["缁х画淇濇寔瑙勮寖鎿嶄綔","寤鸿鍔犲己鎵ц绋嬪簭浜嗚В","涓嶈鑼冨彲鑳藉奖鍝嶆潈鐩婂疄鐜?]}
+]}
+];
+
+var currentModule=0,answers={},moduleScores={};
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(function(p){p.classList.remove("active")});
+  document.getElementById(id).classList.add("active");
+  window.scrollTo(0,0);
+}
+
+function showAdminPage(){
+  var pwd=prompt("璇疯緭鍏ョ鐞嗗瘑鐮侊細");
+  if(pwd==="wjp053899"){loadAdminData();showPage("adminPage")}
+  else if(pwd!==null){alert("瀵嗙爜閿欒")}
+}
+
+function loadAdminData(){
+  var records=JSON.parse(localStorage.getItem("adminRecords")||"[]");
+  var total=records.length;
+  var highCount=records.filter(function(r){return r.score<40}).length;
+  document.getElementById("adminTotal").textContent=total;
+  document.getElementById("adminHigh").textContent=highCount;
+  document.getElementById("adminContacted").textContent=records.filter(function(r){return r.contacted}).length;
+  var listHtml="";
+  if(records.length===0){
+    listHtml='<div style="text-align:center;padding:40px;color:#ccc">鏆傛棤浣撴鏁版嵁</div>';
+  }else{
+    records.slice(-10).reverse().forEach(function(r,i){
+      var riskClass=r.score>=70?"#22c55e":(r.score>=40?"#f59e0b":"#ef4444");
+      listHtml+='<div style="padding:16px 0;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:center">';
+      listHtml+='<div><div style="font-size:14px;color:#333;font-weight:500">'+(r.company||"鏈煡浼佷笟")+'</div><div style="font-size:12px;color:#888;margin-top:4px">'+r.industry+' | '+r.size+' | '+r.date+'</div></div>';
+      listHtml+='<div style="text-align:right"><div style="font-size:20px;font-weight:700;color:'+riskClass+'">'+r.score+'鍒?/div><div style="font-size:11px;color:#888">'+r.high+'楂?'+r.medium+'涓?'+r.low+'浣?/div></div>';
+      listHtml+='</div>';
+    });
+  }
+  document.getElementById("adminList").innerHTML=listHtml;
+}
+
+function handleLogin(e){
+  e.preventDefault();
+  var p=document.getElementById("phone").value;
+  var c=document.getElementById("smsCode").value;
+  if(p.length!==11){alert("璇疯緭鍏ユ纭殑11浣嶆墜鏈哄彿");return}
+  if(c.length!==6){alert("璇疯緭鍏?浣嶉獙璇佺爜");return}
+  localStorage.setItem("loggedIn","true");
+  localStorage.setItem("phone",p);
+  showPage("companyPage");
+}
+
+function handleCompanySubmit(e){
+  e.preventDefault();
+  var n=document.getElementById("companyName").value;
+  var i=document.getElementById("industry").value;
+  var s=document.getElementById("companySize").value;
+  var cn=document.getElementById("contactName").value;
+  var cp=document.getElementById("contactPhone").value;
+  if(!n||!i||!s||!cn||!cp){alert("璇峰～鍐欏畬鏁寸殑浼佷笟淇℃伅");return}
+  localStorage.setItem("companyInfo",JSON.stringify({name:n,industry:i,size:s,contact:cn,phone:cp,date:new Date().toLocaleString()}));
+  startQuiz();
+}
+
+function sendSMS(){
+  var p=document.getElementById("phone").value;
+  if(p.length!==11){alert("璇疯緭鍏ユ纭殑11浣嶆墜鏈哄彿");return}
+  alert("楠岃瘉鐮佸凡鍙戦€侊紒\n\n璇锋煡鐪嬫墜鏈虹煭淇★紝杈撳叆楠岃瘉鐮佸畬鎴愮櫥褰曘€?);
+}
+
+function startQuiz(){
+  currentModule=0;answers={};moduleScores={};
+  localStorage.removeItem("quizAnswers");
+  renderProgress();
+  renderModule();
+  document.getElementById("progressBar").style.display="block";
+  showPage("quizPage");
+}
+
+function renderProgress(){
+  var total=modules.reduce(function(s,m){return s+m.questions.length},0);
+  var answered=0;
+  modules.forEach(function(m){if(answers[m.id]){answered+=Object.keys(answers[m.id]).length}});
+  var pct=Math.round((answered/total)*100);
+  document.getElementById("progressPercent").textContent=pct+"%";
+  document.getElementById("progressFill").style.width=pct+"%";
+  document.getElementById("currentModuleName").textContent=(currentModule+1)+"/"+modules.length+" "+modules[currentModule].title;
+}
+
+function renderModule(){
+  var m=modules[currentModule];
+  var answered=answers[m.id]?Object.keys(answers[m.id]).length:0;
+  var total=m.questions.length;
+  var pct=Math.round((answered/total)*100);
+  var html='<div class="quiz-content"><div class="quiz-card">';
+  html+='<div class="quiz-header"><h2>'+m.icon+' '+m.title+'</h2><span>绗?'+(currentModule+1)+' / '+modules.length+' 妯″潡 路 宸茬瓟 '+answered+' / '+total+' 棰?/span></div>';
+  html+='<div class="quiz-body">';
+  m.questions.forEach(function(q, qi){
+    var saved=answers[m.id]&&answers[m.id][qi];
+    var riskClass=saved?(saved.risk===2?"high":(saved.risk===1?"medium":"low")):"";
+    html+='<div class="question"><div class="question-text"><span style="color:#f6ad55;font-weight:700">'+(qi+1)+'.</span> '+q.q+(saved?' 鉁?:'')+'</div>';
+    html+='<div class="options">';
+    q.opts.forEach(function(opt,oi){
+      var sel=saved&&saved.option===oi?"selected":"";
+      var rClass=oi===2?"high":(oi===1?"medium":"low");
+      html+='<div class="option '+rClass+' '+sel+'" onclick="selectOption('+qi+','+oi+')">'+opt+'</div>';
+    });
+    html+='</div></div>';
+  });
+  var isLast=currentModule===modules.length-1;
+  var allDone=answered===total;
+  html+='<div class="quiz-nav">';
+  html+='<button class="prev" onclick="prevModule()" '+(currentModule===0?'disabled':'')+'>涓婁竴妯″潡</button>';
+  html+='<button class="next '+(allDone?'':'disabled')+'" onclick="nextModule()">'+(isLast?(allDone?'鐢熸垚鎶ュ憡':'璇峰畬鎴愭墍鏈夐鐩?):(allDone?'涓嬩竴妯″潡':'璇峰畬鎴愭墍鏈夐鐩?))+'</button>';
+  html+='</div></div></div>';
+  document.getElementById("quizContent").innerHTML=html;
+  window.scrollTo(0,0);
+}
+
+function selectOption(qi,oi){
+  var m=modules[currentModule];
+  if(!answers[m.id])answers[m.id]={};
+  answers[m.id][qi]={option:oi,answer:m.questions[qi].opts[oi],risk:oi,sug:m.questions[qi].sug[oi]};
+  localStorage.setItem("quizAnswers",JSON.stringify(answers));
+  renderProgress();
+  renderModule();
+}
+
+function nextModule(){
+  var m=modules[currentModule];
+  var answered=answers[m.id]?Object.keys(answers[m.id]).length:0;
+  if(answered<m.questions.length){
+    alert("璇峰畬鎴愭湰妯″潡鎵€鏈夐鐩悗鍐嶇户缁紒\n\n褰撳墠杩涘害锛?+answered+"/"+m.questions.length+" 棰?);
+    return;
+  }
+  if(currentModule<modules.length-1){currentModule++;renderProgress();renderModule()}
+  else{generateReport()}
+}
+
+function prevModule(){
+  if(currentModule>0){currentModule--;renderProgress();renderModule()}
+}
+
+function generateReport(){
+  var high=0,medium=0,low=0;
+  var riskItems=[];
+  moduleScores={};
+  modules.forEach(function(m){
+    var mH=0,mM=0,mL=0;
+    if(answers[m.id]){
+      Object.keys(answers[m.id]).forEach(function(qi){
+        var a=answers[m.id][qi];
+        if(a.risk===2){high++;mH++}else if(a.risk===1){medium++;mM++}else{mL++}
+      })
+    }
+    var total=m.questions.length;
+    var score=total>0?Math.round(((total-mH*2-mM)/total)*100):100;
+    var level=score>=70?"low":(score>=40?"medium":"high");
+    moduleScores[m.id]={score:score,level:level,title:m.title,icon:m.icon};
+  });
+  var totalQ=modules.reduce(function(s,m){return s+m.questions.length},0);
+  var score=totalQ>0?Math.round(((totalQ-high*2-medium)/totalQ)*100):100;
+  document.getElementById("scoreVal").textContent=score;
+  document.getElementById("highCount").textContent=high;
+  document.getElementById("mediumCount").textContent=medium;
+  document.getElementById("lowCount").textContent=low;
+  var circle=document.getElementById("scoreCircle");
+  circle.className="score-box "+(score>=70?"low":(score>=40?"medium":"high"));
+  var titles={high:"馃帀 椋庨櫓鐘跺喌鑹ソ",medium:"鈿狅笍 瀛樺湪涓€瀹氶闄?,low:"馃毃 椋庨櫓杈冮珮"};
+  var level=score>=70?"high":(score>=40?"medium":"high");
+  document.getElementById("resultTitle").textContent=titles[level];
+  document.getElementById("resultSubtitle").textContent=score>=70?"鎮ㄧ殑浼佷笟娉曞緥椋庨櫓杈冧綆锛屽缓璁户缁繚鎸佸悎瑙勮繍钀?:(score>=40?"寤鸿鍏虫敞楂樹寒椤圭洰锛屽強鏃惰繘琛屽悎瑙勬暣鏀?:"澶氶」鎸囨爣瀛樺湪杈冮珮椋庨櫓锛屽缓璁敖蹇挩璇笓涓氬緥甯?);
+  document.getElementById("progressBar").style.display="none";
+  var modHtml="";
+  modules.forEach(function(m){
+    var ms=moduleScores[m.id];
+    if(ms){
+      modHtml+='<div class="module-item"><span class="module-name">'+ms.icon+' '+ms.title+'</span><span class="module-score '+ms.level+'">'+ms.score+'鍒?/span></div>';
+    }
+  });
+  document.getElementById("moduleList").innerHTML=modHtml;
+  modules.forEach(function(m){
+    if(answers[m.id]){
+      Object.keys(answers[m.id]).forEach(function(qi){
+        var a=answers[m.id][qi];
+        if(a.risk>=1){
+          riskItems.push({level:a.risk===2?"high":"medium",module:m.title,question:m.questions[qi].q,answer:a.answer,sug:a.sug})
+        }
+      })
+    }
+  });
+  riskItems.sort(function(a,b){return b.level.localeCompare(a.level)});
+  var itemsHtml=riskItems.slice(0,20).map(function(item){
+    return'<div style="background:white;padding:14px;border-radius:10px;margin-bottom:10px;border-left:4px solid '+(item.level==="high"?"#ef4444":"#f59e0b")+'"><div style="font-size:11px;color:'+(item.level==="high"?"#c00":"#a60")+';margin-bottom:6px">'+(item.level==="high"?"馃敶 楂橀闄?:"馃煛 涓闄?)+' 路 '+item.module+'</div><div style="font-size:14px;color:#333;margin-bottom:8px">'+item.question+'</div><div style="font-size:13px;color:#666">褰撳墠鐘舵€侊細'+item.answer+'</div><div style="background:#f8fafc;padding:10px;border-radius:6px;margin-top:8px;font-size:13px"><strong style="color:#1a365d">馃挕 鏁存敼寤鸿锛?/strong>'+item.sug+'</div></div>';
+  }).join("");
+  document.getElementById("riskDetail").innerHTML=itemsHtml||'<div style="background:#f0fdf4;padding:30px;border-radius:12px;text-align:center;color:#22c55e;font-size:15px">鉁?鎭枩锛佹偍鐨勪紒涓氬湪鏈浣撴涓湭鍙戠幇楂橀闄╅」</div>';
+  localStorage.setItem("lastReport",JSON.stringify({score:score,high:high,medium:medium,low:low,items:riskItems,moduleScores:moduleScores,company:localStorage.getItem("companyInfo"),date:new Date().toLocaleString()}));
+  var companyInfo=localStorage.getItem("companyInfo")?JSON.parse(localStorage.getItem("companyInfo")):{};
+  var records=JSON.parse(localStorage.getItem("adminRecords")||"[]");
+  records.push({company:companyInfo.name,industry:companyInfo.industry,size:companyInfo.size,contact:companyInfo.contact,phone:companyInfo.phone,date:companyInfo.date,score:score,high:high,medium:medium,low:low,contacted:false});
+  localStorage.setItem("adminRecords",JSON.stringify(records));
+  showPage("resultPage");
+}
+
+function contactLawyer(){
+  alert("姝ｅ湪涓烘偍瀵规帴鐜嬮噾骞冲緥甯圽n\n馃摓 鐢佃瘽锛?5301088801\n\n璇蜂繚鎸佺數璇濈晠閫氾紝寰嬪笀灏嗗湪24灏忔椂鍐呬笌鎮ㄨ仈绯伙紒");
+}
+
+function downloadReport(){
+  try{
+    var company=localStorage.getItem("companyInfo")?JSON.parse(localStorage.getItem("companyInfo")):{};
+    var score=document.getElementById("scoreVal").textContent;
+    var high=document.getElementById("highCount").textContent;
+    var medium=document.getElementById("mediumCount").textContent;
+    var low=document.getElementById("lowCount").textContent;
+    var level=score>=70?"鑹ソ":(score>=40?"涓€鑸?:"杈冮珮");
+    var doc=new jsPDF();
+    var pageW=210,margin=20,y=margin;
+    doc.setFillColor(26,54,93);
+    doc.rect(0,0,pageW,35,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(18);
+    doc.text("浼佷笟娉曞緥椋庨櫓浣撴鎶ュ憡",pageW/2,18,{align:"center"});
+    doc.setFontSize(10);
+    doc.text("鍖椾含澶ф垚寰嬪笀浜嬪姟鎵€ | 鐜嬮噾骞冲緥甯?,pageW/2,28,{align:"center"});
+    y=50;
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(10);
+    doc.text("浣撴鏃堕棿锛?+new Date().toLocaleString("zh-CN"),margin,y);
+    y+=7;doc.text("浼佷笟鍚嶇О锛?+(company.name||""),margin,y);
+    y+=7;doc.text("鎵€灞炶涓氾細"+(company.industry||"")+"  |  浼佷笟瑙勬ā锛?+(company.size||""),margin,y);
+    y+=7;doc.text("鑱旂郴鐢佃瘽锛?+(company.phone||""),margin,y);
+    y+=15;
+    doc.setFillColor(26,54,93);
+    doc.rect(margin,y,pageW-2*margin,30,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(12);
+    doc.text("椋庨櫓璇勫垎",margin+10,y+12);
+    doc.setFontSize(24);
+    doc.text(score+"鍒?,margin+50,y+20);
+    doc.setFontSize(11);
+    doc.text("椋庨櫓绛夌骇锛?+level,pageW-margin-10,y+14,{align:"right"});
+    doc.setFontSize(10);
+    doc.text("璇勪及缁撴灉锛氭偍鐨勪紒涓氭硶寰嬮闄?+level,pageW/2,y+26,{align:"center"});
+    y+=45;
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(11);
+    doc.text("椋庨櫓鍒嗗竷缁熻",margin,y);
+    y+=8;
+    var stats=[{label:"楂橀闄╅」",value:high,color:"#ef4444"},{label:"涓闄╅」",value:medium,color:"#f59e0b"},{label:"浣庨闄╅」",value:low,color:"#22c55e"}];
+    stats.forEach(function(s,i){
+      var x=margin+i*(pageW-2*margin)/3;
+      doc.setFillColor(245,245,245);
+      doc.roundedRect(x,y,55,25,3,3,"F");
+      doc.setFontSize(18);
+      doc.setTextColor(0,0,0);
+      doc.text(s.value,x+27,y+12,{align:"center"});
+      doc.setFontSize(8);
+      doc.setTextColor(100,100,100);
+      doc.text(s.label,x+27,y+20,{align:"center"});
+    });
+    y+=40;
+    doc.setFontSize(11);
+    doc.text("鍚勬ā鍧楅闄╄瘎浼?,margin,y);
+    y+=8;
+    var reportData=localStorage.getItem("lastReport")?JSON.parse(localStorage.getItem("lastReport")):{};
+    var modScores=reportData.moduleScores||{};
+    modules.forEach(function(m){
+      if(y>280){doc.addPage();y=margin}
+      var ms=modScores[m.id];
+      if(ms){
+        var mColor=ms.level==="high"?"#ef4444":(ms.level==="medium"?"#f59e0b":"#22c55e");
+        doc.setFillColor(245,245,245);
+        doc.roundedRect(margin,y,pageW-2*margin,10,2,2,"F");
+        doc.setFontSize(9);
+        doc.setTextColor(0,0,0);
+        doc.text(m.icon+" "+m.title,margin+5,y+7);
+        doc.setTextColor(mColor);
+        doc.text(ms.score+"鍒?,pageW-margin-5,y+7,{align:"right"});
+        y+=14;
+      }
+    });
+    y+=10;
+    if(y>250){doc.addPage();y=margin}
+    doc.setTextColor(0,0,0);
+    doc.setFontSize(11);
+    doc.text("閲嶇偣椋庨櫓鍙婃暣鏀瑰缓璁?,margin,y);
+    y+=8;
+    var riskItems=reportData.items||[];
+    var count=0;
+    riskItems.forEach(function(item){
+      if(count>=8||y>270)return;
+      var itemColor=item.level==="high"?"#ef4444":"#f59e0b";
+      var itemBg=item.level==="high"?[255,245,245]:[255,252,232];
+      doc.setFillColor(itemBg[0],itemBg[1],itemBg[2]);
+      doc.roundedRect(margin,y,pageW-2*margin,15,2,2,"F");
+      doc.setFillColor(itemColor);
+      doc.circle(margin+4,y+7,1.5,"F");
+      doc.setFontSize(8);
+      doc.setTextColor(0,0,0);
+      var qText=(item.question||"").substring(0,45);
+      doc.text(qText,margin+8,y+6);
+      doc.setTextColor(100,100,100);
+      var sText="寤鸿锛?+(item.sug||"").substring(0,35);
+      doc.text(sText,margin+8,y+11);
+      y+=18;
+      count++;
+    });
+    y+=10;
+    if(y>260){doc.addPage();y=margin}
+    doc.setFillColor(26,54,93);
+    doc.rect(0,280,pageW,17,"F");
+    doc.setTextColor(255,255,255);
+    doc.setFontSize(12);
+    doc.text("涓撲笟寰嬪笀鍜ㄨ",pageW/2,286,{align:"center"});
+    doc.setFontSize(10);
+    doc.text("鐜嬮噾骞?寰嬪笀  |  鍖椾含澶ф垚寰嬪笀浜嬪姟鎵€  |  15301088801",pageW/2,294,{align:"center"});
+    var filename="娉曞緥椋庨櫓浣撴鎶ュ憡_"+new Date().toISOString().slice(0,10)+".pdf";
+    doc.save(filename);
+    alert("PDF鎶ュ憡宸蹭笅杞斤紒\n\n鏂囦欢鍚嶏細"+filename);
+  }catch(e){
+    alert("涓嬭浇澶辫触锛岃绋嶅悗閲嶈瘯銆俓n\n閿欒淇℃伅锛?+e.message);
+  }
+}
+</script>
+</body>
+</html>
